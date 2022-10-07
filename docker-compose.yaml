@@ -1,0 +1,37 @@
+services:
+  database:
+    volumes:
+      - 'database-data:/var/lib/database'
+    restart: always
+    #environment:
+      #- name=value
+    networks:
+      - firedev
+
+
+  backend:
+    build: ./firedevback/
+    ports:
+      - '8080'
+    #environment:
+    restart: always
+    networks:
+      - firedev
+
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    command:
+      - "-b 0.0.0.0"
+    #environment:
+    restart: always
+    networks:
+      - firedev
+
+
+networks:
+  firedev:
+    driver: bridge
+    name: meubridge
+
+volumes:
+  database-data:
